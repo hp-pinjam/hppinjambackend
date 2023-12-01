@@ -62,18 +62,18 @@ type About struct {
 	Status      bool   `json:"status" bson:"status"`
 }
 
-type Tour struct {
-	ID          int    `json:"id" bson:"id"`
-	Title       string `json:"title" bson:"title"`
-	Description string `json:"description" bson:"description"`
-	Cari        string `json:"cari" bson:"cari"`
-	Tanggal     string `json:"tanggal" bson:"tanggal"`
-	Image       string `json:"image" bson:"image"`
-	Harga       int    `json:"harga" bson:"harga"`
-	Hp          []Hp   `json:"hp" bson:"hp"`
-	Rating      string `json:"rating" bson:"rating"`
-	Status      bool   `json:"status" bson:"status"`
-}
+// type Hp struct {
+// 	ID          int    `json:"id" bson:"id"`
+// 	Title       string `json:"title" bson:"title"`
+// 	Description string `json:"description" bson:"description"`
+// 	Cari        string `json:"cari" bson:"cari"`
+// 	Tanggal     string `json:"tanggal" bson:"tanggal"`
+// 	Image       string `json:"image" bson:"image"`
+// 	Harga       int    `json:"harga" bson:"harga"`
+// 	Hp          []Hp   `json:"hp" bson:"hp"`
+// 	Rating      string `json:"rating" bson:"rating"`
+// 	Status      bool   `json:"status" bson:"status"`
+// }
 
 type Contact struct {
 	ID      int    `json:"id" bson:"id"`
