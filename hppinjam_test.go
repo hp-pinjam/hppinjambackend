@@ -12,51 +12,51 @@ import (
 // user
 func TestCreateNewUserRole(t *testing.T) {
 	var userdata User
-	userdata.Username = "prisyahaura"
-	userdata.Email = "prisyahaura@gmail.com"
-	userdata.Password = "picaw"
+	userdata.Username = "farhan"
+	userdata.Email = "farhanriziq@gmail.com"
+	userdata.Password = "riziq"
 	userdata.Role = "user"
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	CreateNewUserRole(mconn, "user", userdata)
 }
 
 // admin
 func TestCreateNewAdminRole(t *testing.T) {
 	var admindata Admin
-	admindata.Username = "prisyahaura"
-	admindata.Email = "prisyahaura@gmail.com"
-	admindata.Password = "picaw"
+	admindata.Username = "farhan"
+	admindata.Email = "farhanriziq@gmail.com"
+	admindata.Password = "riziq"
 	admindata.Role = "admin"
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	CreateNewAdminRole(mconn, "admin", admindata)
 }
 
 // user
 func TestDeleteUser(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var userdata User
-	userdata.Email = "prisyahaura@gmail.com"
+	userdata.Email = "farhanriziq@gmail.com"
 	DeleteUser(mconn, "user", userdata)
 }
 
 // admin
 func TestDeleteAdmin(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var admindata Admin
-	admindata.Username = "prisyahaura"
+	admindata.Username = "farhan"
 	DeleteAdmin(mconn, "admin", admindata)
 }
 
 // user
 func CreateNewUserToken(t *testing.T) {
 	var userdata User
-	userdata.Username = "prisyahaura"
-	userdata.Email = "prisyahaura@gmail.com"
-	userdata.Password = "picaw"
+	userdata.Username = "farhan"
+	userdata.Email = "farhanriziq@gmail.com"
+	userdata.Password = "riziq"
 	userdata.Role = "user"
 
 	// Create a MongoDB connection
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 
 	// Call the function to create a user and generate a token
 	err := CreateUserAndAddToken("your_private_key_env", mconn, "user", userdata)
@@ -69,13 +69,13 @@ func CreateNewUserToken(t *testing.T) {
 // admin
 func CreateNewAdminToken(t *testing.T) {
 	var admindata Admin
-	admindata.Username = "prisyahaura"
-	admindata.Email = "prisyahaura@gmail.com"
-	admindata.Password = "picaw"
+	admindata.Username = "farhan"
+	admindata.Email = "farhanriziq@gmail.com"
+	admindata.Password = "riziq"
 	admindata.Role = "admin"
 
 	// Create a MongoDB connection
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 
 	// Call the function to create a admin and generate a token
 	err := CreateAdminAndAddToken("your_private_key_env", mconn, "admin", admindata)
@@ -87,46 +87,46 @@ func CreateNewAdminToken(t *testing.T) {
 
 // user
 func TestGFCPostHandlerUser(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var userdata User
-	userdata.Username = "prisyahaura"
-	userdata.Email = "prisyahaura@gmail.com"
-	userdata.Password = "picaw"
+	userdata.Username = "farhan"
+	userdata.Email = "farhanriziq@gmail.com"
+	userdata.Password = "riziq"
 	userdata.Role = "user"
 	CreateNewUserRole(mconn, "user", userdata)
 }
 
 // admin
 func TestGFCPostHandlerAdmin(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var admindata Admin
-	admindata.Username = "prisyahaura"
-	admindata.Email = "prisyahaura@gmail.com"
-	admindata.Password = "picaw"
+	admindata.Username = "farhan"
+	admindata.Email = "farhanriziq@gmail.com"
+	admindata.Password = "riziq"
 	admindata.Role = "admin"
 	CreateNewAdminRole(mconn, "admin", admindata)
 }
 
-// Test Insert Ticket
-func TestInsertTicket(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
-	var ticketdata Ticket
-	ticketdata.Nomorid = 1
-	ticketdata.Title = "garut"
-	ticketdata.Description = "waw garut keren banget"
-	ticketdata.Image = "https://images3.alphacoders.com/165/thumb-1920-165265.jpg"
-	CreateNewTicket(mconn, "ticket", ticketdata)
+// Test Insert Hp
+func TestInsertHp(t *testing.T) {
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
+	var hpdata Hp
+	hpdata.Nomorid = 1
+	hpdata.Title = "Iphone 15 Pro Max"
+	hpdata.Description = "Hp keluaran terbaru dari iphone yang memiliki spesifikasi yang sangat amat bagus"
+	hpdata.Image = "https://cdn.eraspace.com/media/catalog/product/a/p/apple_iphone_15_pro_max_natural_titanium_1_1_2.jpg"
+	CreateNewHp(mconn, "hp", hpdata)
 }
 
-// Test All Ticket
-func TestAllTicket(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
-	ticket := GetAllTicket(mconn, "ticket")
-	fmt.Println(ticket)
+// Test All Hp
+func TestAllHp(t *testing.T) {
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
+	hp := GetAllHp(mconn, "hp")
+	fmt.Println(hp)
 }
 
 func TestGeneratePasswordHash(t *testing.T) {
-	password := "picaw"
+	password := "riziq"
 	hash, _ := HashPass(password) // ignore error for the sake of simplicity
 
 	fmt.Println("Password:", password)
@@ -140,17 +140,17 @@ func TestGeneratePrivateKeyPaseto(t *testing.T) {
 	privateKey, publicKey := watoken.GenerateKey()
 	fmt.Println(privateKey)
 	fmt.Println(publicKey)
-	hasil, err := watoken.Encode("wegotour", privateKey)
+	hasil, err := watoken.Encode("hppinjam", privateKey)
 	fmt.Println(hasil, err)
 }
 
 // user
 func TestHashFunctionUser(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var userdata User
-	userdata.Username = "prisyahaura"
-	userdata.Email = "prisyahaura@gmail.com"
-	userdata.Password = "picaw"
+	userdata.Username = "farhan"
+	userdata.Email = "farhanriziq@gmail.com"
+	userdata.Password = "riziq"
 
 	filter := bson.M{"username": userdata.Username}
 	res := atdb.GetOneDoc[Admin](mconn, "user", filter)
@@ -163,11 +163,11 @@ func TestHashFunctionUser(t *testing.T) {
 
 // admin
 func TestHashFunctionAdmin(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var admindata Admin
-	admindata.Username = "prisyahaura"
-	admindata.Email = "prisyahaura@gmail.com"
-	admindata.Password = "picaw"
+	admindata.Username = "farhan"
+	admindata.Email = "farhanriziq@gmail.com"
+	admindata.Password = "riziq"
 
 	filter := bson.M{"username": admindata.Username}
 	res := atdb.GetOneDoc[Admin](mconn, "admin", filter)
@@ -180,11 +180,11 @@ func TestHashFunctionAdmin(t *testing.T) {
 
 // user
 func TestUserIsPasswordValid(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var userdata User
-	userdata.Username = "prisyahaura"
-	userdata.Email = "prisyahaura@gmail.com"
-	userdata.Password = "picaw"
+	userdata.Username = "farhan"
+	userdata.Email = "farhanriziq@gmail.com"
+	userdata.Password = "riziq"
 
 	anu := UserIsPasswordValid(mconn, "user", userdata)
 	fmt.Println(anu)
@@ -192,11 +192,11 @@ func TestUserIsPasswordValid(t *testing.T) {
 
 // admin
 func TestAdminIsPasswordValid(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var admindata Admin
-	admindata.Username = "prisyahaura"
-	admindata.Email = "prisyahaura@gmail.com"
-	admindata.Password = "picaw"
+	admindata.Username = "farhan"
+	admindata.Email = "farhanriziq@gmail.com"
+	admindata.Password = "riziq"
 
 	anu := AdminIsPasswordValid(mconn, "admin", admindata)
 	fmt.Println(anu)
@@ -204,18 +204,18 @@ func TestAdminIsPasswordValid(t *testing.T) {
 
 // user
 func TestUserFix(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var userdata User
-	userdata.Username = "prisyahaura"
-	userdata.Email = "prisyahaura@gmail.com"
-	userdata.Password = "picaw"
+	userdata.Username = "farhan"
+	userdata.Email = "farhanriziq@gmail.com"
+	userdata.Password = "riziq"
 	userdata.Role = "user"
 	CreateUser(mconn, "user", userdata)
 }
 
 // admin
 func TestAdminFix(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var admindata Admin
 	admindata.Email = "pasabar@gmail.com"
 	admindata.Password = "hebat"
@@ -225,22 +225,22 @@ func TestAdminFix(t *testing.T) {
 
 // user
 func TestLoginUser(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var userdata User
-	userdata.Username = "prisyahaura"
-	userdata.Email = "prisyahaura@gmail.com"
-	userdata.Password = "picaw"
+	userdata.Username = "farhan"
+	userdata.Email = "farhanriziq@gmail.com"
+	userdata.Password = "riziq"
 	UserIsPasswordValid(mconn, "user", userdata)
 	fmt.Println(userdata)
 }
 
 // admin
 func TestLoginAdmin(t *testing.T) {
-	mconn := SetConnection("MONGOSTRING", "wegotour")
+	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var admindata Admin
-	admindata.Username = "prisyahaura"
-	admindata.Email = "prisyahaura@gmail.com"
-	admindata.Password = "picaw"
+	admindata.Username = "riziq"
+	admindata.Email = "farhanriziq@gmail.com"
+	admindata.Password = "riziq"
 	AdminIsPasswordValid(mconn, "admin", admindata)
 	fmt.Println(admindata)
 }

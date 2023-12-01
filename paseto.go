@@ -90,10 +90,10 @@ func Register(Mongoenv, dbname string, r *http.Request) string {
 	return response
 }
 
-// <--- ini ticket --->
+// <--- ini hp --->
 
-// ticket post
-func GCFInsertTicket(publickey, MONGOCONNSTRINGENV, dbname, colluser, collticket string, r *http.Request) string {
+// hp post
+func GCFInsertHp(publickey, MONGOCONNSTRINGENV, dbname, colluser, collhp string, r *http.Request) string {
 	var response Credential
 	response.Status = false
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
@@ -110,20 +110,20 @@ func GCFInsertTicket(publickey, MONGOCONNSTRINGENV, dbname, colluser, collticket
 		} else {
 			user2 := FindUser(mconn, colluser, userdata)
 			if user2.Role == "user" {
-				var dataticket Ticket
-				err := json.NewDecoder(r.Body).Decode(&dataticket)
+				var datahp Hp
+				err := json.NewDecoder(r.Body).Decode(&datahp)
 				if err != nil {
 					response.Message = "Error parsing application/json: " + err.Error()
 				} else {
-					insertTicket(mconn, collticket, Ticket{
-						Nomorid:     dataticket.Nomorid,
-						Title:       dataticket.Title,
-						Description: dataticket.Description,
-						Image:       dataticket.Image,
-						Status:      dataticket.Status,
+					insertHp(mconn, collhp, Hp{
+						Nomorid:     datahp.Nomorid,
+						Title:       datahp.Title,
+						Description: datahp.Description,
+						Image:       datahp.Image,
+						Status:      datahp.Status,
 					})
 					response.Status = true
-					response.Message = "Berhasil Insert Ticket"
+					response.Message = "Berhasil Insert Hp"
 				}
 			} else {
 				response.Message = "Anda tidak bisa Insert data karena bukan user"
@@ -133,8 +133,8 @@ func GCFInsertTicket(publickey, MONGOCONNSTRINGENV, dbname, colluser, collticket
 	return GCFReturnStruct(response)
 }
 
-// delete ticket
-func GCFDeleteTicket(publickey, MONGOCONNSTRINGENV, dbname, colladmin, collticket string, r *http.Request) string {
+// delete hp
+func GCFDeleteHp(publickey, MONGOCONNSTRINGENV, dbname, colladmin, collhp string, r *http.Request) string {
 
 	var respon Credential
 	respon.Status = false
@@ -153,14 +153,14 @@ func GCFDeleteTicket(publickey, MONGOCONNSTRINGENV, dbname, colladmin, collticke
 		} else {
 			admin2 := FindAdmin(mconn, colladmin, admindata)
 			if admin2.Role == "admin" {
-				var dataticket Ticket
-				err := json.NewDecoder(r.Body).Decode(&dataticket)
+				var datahp Hp
+				err := json.NewDecoder(r.Body).Decode(&datahp)
 				if err != nil {
 					respon.Message = "Error parsing application/json: " + err.Error()
 				} else {
-					DeleteTicket(mconn, collticket, dataticket)
+					DeleteHp(mconn, collhp, datahp)
 					respon.Status = true
-					respon.Message = "Berhasil Delete Ticket"
+					respon.Message = "Berhasil Delete Hp"
 				}
 			} else {
 				respon.Message = "Anda tidak bisa Delete data karena bukan admin"
@@ -170,8 +170,8 @@ func GCFDeleteTicket(publickey, MONGOCONNSTRINGENV, dbname, colladmin, collticke
 	return GCFReturnStruct(respon)
 }
 
-// update ticket
-func GCFUpdateTicket(publickey, MONGOCONNSTRINGENV, dbname, colladmin, collticket string, r *http.Request) string {
+// update hp
+func GCFUpdateHp(publickey, MONGOCONNSTRINGENV, dbname, colladmin, collhp string, r *http.Request) string {
 	var response Credential
 	response.Status = false
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
@@ -188,16 +188,16 @@ func GCFUpdateTicket(publickey, MONGOCONNSTRINGENV, dbname, colladmin, collticke
 		} else {
 			admin2 := FindAdmin(mconn, colladmin, admindata)
 			if admin2.Role == "admin" {
-				var dataticket Ticket
-				err := json.NewDecoder(r.Body).Decode(&dataticket)
+				var datahp Hp
+				err := json.NewDecoder(r.Body).Decode(&datahp)
 				if err != nil {
 					response.Message = "Error parsing application/json: " + err.Error()
 
 				} else {
-					UpdatedTicket(mconn, collticket, bson.M{"id": dataticket.ID}, dataticket)
+					UpdatedHp(mconn, collhp, bson.M{"id": datahp.ID}, datahp)
 					response.Status = true
-					response.Message = "Berhasil Update Ticket"
-					GCFReturnStruct(CreateResponse(true, "Success Update Ticket", dataticket))
+					response.Message = "Berhasil Update Hp"
+					GCFReturnStruct(CreateResponse(true, "Success Update Hp", datahp))
 				}
 			} else {
 				response.Message = "Anda tidak bisa Update data karena bukan admin"
@@ -208,31 +208,31 @@ func GCFUpdateTicket(publickey, MONGOCONNSTRINGENV, dbname, colladmin, collticke
 	return GCFReturnStruct(response)
 }
 
-// get all ticket
-func GCFGetAllTicket(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+// get all hp
+func GCFGetAllHp(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
-	dataticket := GetAllTicket(mconn, collectionname)
-	if dataticket != nil {
-		return GCFReturnStruct(CreateResponse(true, "success Get All Ticket", dataticket))
+	datahp := GetAllHp(mconn, collectionname)
+	if datahp != nil {
+		return GCFReturnStruct(CreateResponse(true, "success Get All Hp", datahp))
 	} else {
-		return GCFReturnStruct(CreateResponse(false, "Failed Get All Ticket", dataticket))
+		return GCFReturnStruct(CreateResponse(false, "Failed Get All Hp", datahp))
 	}
 }
 
-// get all ticket by id
-func GCFGetAllTicketID(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
+// get all Hp by id
+func GCFGetAllHpID(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Request) string {
 	mconn := SetConnection(MONGOCONNSTRINGENV, dbname)
 
-	var dataticket Ticket
-	err := json.NewDecoder(r.Body).Decode(&dataticket)
+	var datahp Hp
+	err := json.NewDecoder(r.Body).Decode(&datahp)
 	if err != nil {
 		return err.Error()
 	}
 
-	ticket := GetAllTicketID(mconn, collectionname, dataticket)
-	if ticket != (Ticket{}) {
-		return GCFReturnStruct(CreateResponse(true, "Success: Get ID Ticket", dataticket))
+	hp := GetAllHpID(mconn, collectionname, datahp)
+	if hp != (Hp{}) {
+		return GCFReturnStruct(CreateResponse(true, "Success: Get ID Hp", datahp))
 	} else {
-		return GCFReturnStruct(CreateResponse(false, "Failed to Get ID Ticket", dataticket))
+		return GCFReturnStruct(CreateResponse(false, "Failed to Get ID Hp", datahp))
 	}
 }

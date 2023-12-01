@@ -198,38 +198,38 @@ func CreateUser(mongoconn *mongo.Database, collection string, userdata User) int
 	return atdb.InsertOneDoc(mongoconn, collection, userdata)
 }
 
-// ticket
-func CreateNewTicket(mongoconn *mongo.Database, collection string, ticketdata Ticket) interface{} {
-	return atdb.InsertOneDoc(mongoconn, collection, ticketdata)
+// hp
+func CreateNewHp(mongoconn *mongo.Database, collection string, hpdata Hp) interface{} {
+	return atdb.InsertOneDoc(mongoconn, collection, hpdata)
 }
 
-// ticket function
-func insertTicket(mongoconn *mongo.Database, collection string, ticketdata Ticket) interface{} {
-	return atdb.InsertOneDoc(mongoconn, collection, ticketdata)
+// hp function
+func insertHp(mongoconn *mongo.Database, collection string, hpdata Hp) interface{} {
+	return atdb.InsertOneDoc(mongoconn, collection, hpdata)
 }
 
-func DeleteTicket(mongoconn *mongo.Database, collection string, ticketdata Ticket) interface{} {
-	filter := bson.M{"nomorid": ticketdata.Nomorid}
+func DeleteHp(mongoconn *mongo.Database, collection string, hpdata Hp) interface{} {
+	filter := bson.M{"nomorid": hpdata.Nomorid}
 	return atdb.DeleteOneDoc(mongoconn, collection, filter)
 }
 
-func UpdatedTicket(mongoconn *mongo.Database, collection string, filter bson.M, ticketdata Ticket) interface{} {
-	updatedFilter := bson.M{"nomorid": ticketdata.Nomorid}
-	return atdb.ReplaceOneDoc(mongoconn, collection, updatedFilter, ticketdata)
+func UpdatedHp(mongoconn *mongo.Database, collection string, filter bson.M, hpdata Hp) interface{} {
+	updatedFilter := bson.M{"nomorid": hpdata.Nomorid}
+	return atdb.ReplaceOneDoc(mongoconn, collection, updatedFilter, hpdata)
 }
 
-func GetAllTicket(mongoconn *mongo.Database, collection string) []Ticket {
-	ticket := atdb.GetAllDoc[[]Ticket](mongoconn, collection)
-	return ticket
+func GetAllHp(mongoconn *mongo.Database, collection string) []Hp {
+	hp := atdb.GetAllDoc[[]Hp](mongoconn, collection)
+	return hp
 }
 
-func GetAllTicketID(mongoconn *mongo.Database, collection string, ticketdata Ticket) Ticket {
+func GetAllHpID(mongoconn *mongo.Database, collection string, hpdata Hp) Hp {
 	filter := bson.M{
-		"nomorid":     ticketdata.Nomorid,
-		"title":       ticketdata.Title,
-		"description": ticketdata.Description,
-		"image":       ticketdata.Image,
+		"nomorid":     hpdata.Nomorid,
+		"title":       hpdata.Title,
+		"description": hpdata.Description,
+		"image":       hpdata.Image,
 	}
-	ticketID := atdb.GetOneDoc[Ticket](mongoconn, collection, filter)
-	return ticketID
+	hpID := atdb.GetOneDoc[Hp](mongoconn, collection, filter)
+	return hpID
 }
