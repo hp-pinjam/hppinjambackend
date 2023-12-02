@@ -217,8 +217,8 @@ func TestUserFix(t *testing.T) {
 func TestAdminFix(t *testing.T) {
 	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var admindata Admin
-	admindata.Email = "pasabar@gmail.com"
-	admindata.Password = "hebat"
+	admindata.Email = "hppinjam@gmail.com"
+	admindata.Password = "hppinjam"
 	admindata.Role = "admin"
 	CreateAdmin(mconn, "admin", admindata)
 }
