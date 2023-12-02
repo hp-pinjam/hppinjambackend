@@ -126,7 +126,7 @@ func GCFInsertHp(publickey, MONGOCONNSTRINGENV, dbname, colluser, collhp string,
 					response.Message = "Berhasil Insert Hp"
 				}
 			} else {
-				response.Message = "Anda tidak bisa Insert data karena bukan user"
+				response.Message = "Anda tidak bisa Insert data karena bukan admin"
 			}
 		}
 	}
