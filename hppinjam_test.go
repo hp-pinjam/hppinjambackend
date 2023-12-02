@@ -238,7 +238,7 @@ func TestLoginUser(t *testing.T) {
 func TestLoginAdmin(t *testing.T) {
 	mconn := SetConnection("MONGOSTRING", "hppinjam")
 	var admindata Admin
-	admindata.Username = "riziq"
+	admindata.Username = "farhan"
 	admindata.Email = "farhanriziq@gmail.com"
 	admindata.Password = "riziq"
 	AdminIsPasswordValid(mconn, "admin", admindata)
