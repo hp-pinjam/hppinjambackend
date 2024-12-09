@@ -16,18 +16,18 @@ func TestCreateNewUserRole(t *testing.T) {
 	userdata.Email = "farhanriziq@gmail.com"
 	userdata.Password = "riziq"
 	userdata.Role = "user"
-	mconn := SetConnection("MONGOSTRING", "hppinjam")
+	mconn := SetConnection("MONGOSTRING", "Fitness")
 	CreateNewUserRole(mconn, "user", userdata)
 }
 
 // admin
 func TestCreateNewAdminRole(t *testing.T) {
 	var admindata Admin
-	admindata.Username = "farhan"
-	admindata.Email = "farhanriziq@gmail.com"
-	admindata.Password = "riziq"
+	admindata.Username = "admin"
+	admindata.Email = "admin@gmail.com"
+	admindata.Password = "admin"
 	admindata.Role = "admin"
-	mconn := SetConnection("MONGOSTRING", "hppinjam")
+	mconn := SetConnection("MONGOSTRING", "Fitness")
 	CreateNewAdminRole(mconn, "admin", admindata)
 }
 
