@@ -89,9 +89,9 @@ type About struct {
 // }
 
 type Payload struct {
-	Id   primitive.ObjectID `json:"id"`
-	Role string             `json:"role"`
-	Exp  time.Time          `json:"exp"`
-	Iat  time.Time          `json:"iat"`
-	Nbf  time.Time          `json:"nbf"`
+	Id   string                 `json:"id"`
+	Exp  time.Time              `json:"exp"`
+	Iat  time.Time              `json:"iat"`
+	Nbf  time.Time              `json:"nbf"`
+	Data map[string]interface{} `json:"data"`
 }

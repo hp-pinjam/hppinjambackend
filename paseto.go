@@ -237,65 +237,52 @@ func GCFGetAllHpID(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Re
 	}
 }
 
-func GetUserData(Privatekey, MongoEnv, dbname, Colname string, r *http.Request) string {
-	var resp Credential
-	mconn := SetConnection(MongoEnv, dbname) // Membuka koneksi MongoDB
+func GetUserData(publicKey, MongoConnStringEnv, dbname, colname string, r *http.Request) string {
+	req := new(Response)
+
+	// Membuat koneksi ke MongoDB
+	conn := SetConnection(MongoConnStringEnv, dbname)
+	if conn == nil {
+		req.Status = false
+		req.Message = "Failed to connect to MongoDB"
+		return ReturnStringStruct(req)
+	}
 
 	// Ambil token dari header Login
-	tokenString := r.Header.Get("Login")
-	if tokenString == "" {
-		resp.Message = "Token tidak ditemukan dalam header Login"
-		resp.Status = false
-		return GCFReturnStruct(resp)
+	tokenStr := r.Header.Get("Login")
+	if tokenStr == "" {
+		req.Status = false
+		req.Message = "Header Login Not Found"
+		return ReturnStringStruct(req)
 	}
 
-	// Decode token untuk mendapatkan payload
-	decodedPayload, err := watoken.Decode(tokenString, os.Getenv(Privatekey))
+	// Verifikasi token menggunakan IsTokenValid
+	payload, err := IsTokenValid(publicKey, tokenStr)
 	if err != nil {
-		resp.Message = "Token tidak valid: " + err.Error()
-		resp.Status = false
-		return GCFReturnStruct(resp)
+		req.Status = false
+		req.Message = "Invalid token: " + err.Error()
+		return ReturnStringStruct(req)
 	}
 
-	// Assert tipe payload data ke map[string]interface{}
-	data, ok := decodedPayload.Data.(map[string]interface{})
-	if !ok {
-		resp.Message = "Payload data tidak valid"
-		resp.Status = false
-		return GCFReturnStruct(resp)
-	}
-
-	// Ambil username dari payload data
-	username, ok := data["username"].(string)
+	// Ambil username dari payload dengan type assertion
+	username, ok := payload.Data["username"].(string)
 	if !ok || username == "" {
-		resp.Message = "Username tidak ditemukan dalam token"
-		resp.Status = false
-		return GCFReturnStruct(resp)
+		req.Status = false
+		req.Message = "Username not found in token payload"
+		return ReturnStringStruct(req)
 	}
 
-	// Gunakan username untuk mengambil data user
-	user, err := GetUserFromDB(mconn, Colname, username)
+	// Mengambil data user dari database
+	userData, err := GetUserFromDB(conn, colname, username)
 	if err != nil {
-		resp.Message = "User tidak ditemukan: " + err.Error()
-		resp.Status = false
-		return GCFReturnStruct(resp)
+		req.Status = false
+		req.Message = "Failed to retrieve user data: " + err.Error()
+		return ReturnStringStruct(req)
 	}
 
-	// Hapus password sebelum dikembalikan untuk keamanan
-	user.Password = ""
-
-	// Serialisasi data user ke JSON string
-	userData, err := json.Marshal(user)
-	if err != nil {
-		resp.Message = "Gagal memproses data user: " + err.Error()
-		resp.Status = false
-		return GCFReturnStruct(resp)
-	}
-
-	// Isi Credential dengan status sukses dan data user di Message
-	resp.Status = true
-	resp.Message = string(userData)
-	resp.Token = tokenString
-
-	return GCFReturnStruct(resp)
+	// Jika data user ditemukan
+	req.Status = true
+	req.Message = "User data retrieved successfully"
+	req.Data = userData
+	return ReturnStringStruct(req)
 }
