@@ -237,20 +237,20 @@ func GCFGetAllHpID(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Re
 	}
 }
 
-func GetUserData(publickey, MongoEnv, dbname, Colname string, r *http.Request) string {
+func GetUserData(Privatekey, MongoEnv, dbname, Colname string, r *http.Request) string {
 	var resp Credential
 	mconn := SetConnection(MongoEnv, dbname) // Membuka koneksi MongoDB
 
-	// Mengambil token dari header Authorization
-	tokenString := r.Header.Get("Authorization")
+	// Ambil token dari header Login
+	tokenString := r.Header.Get("Login")
 	if tokenString == "" {
-		resp.Message = "Token tidak ditemukan dalam header"
+		resp.Message = "Token tidak ditemukan dalam header Login"
 		resp.Status = false
 		return GCFReturnStruct(resp)
 	}
 
 	// Decode token untuk mendapatkan payload
-	decodedPayload, err := watoken.Decode(tokenString, os.Getenv(publickey))
+	decodedPayload, err := watoken.Decode(tokenString, os.Getenv(Privatekey))
 	if err != nil {
 		resp.Message = "Token tidak valid: " + err.Error()
 		resp.Status = false
