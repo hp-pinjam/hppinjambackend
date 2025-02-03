@@ -20,7 +20,7 @@ func LoginUser(Privatekey, MongoEnv, dbname, Colname string, r *http.Request) st
 		resp.Message = "error parsing application/json: " + err.Error()
 	} else {
 		if UserIsPasswordValid(mconn, Colname, datauser) {
-			tokenstring, err := watoken.Encode(datauser.Username, os.Getenv(Privatekey))
+			tokenstring, err := EncodeWithUsername(datauser.Username, os.Getenv(Privatekey))
 			if err != nil {
 				resp.Message = "Gagal Encode Token : " + err.Error()
 			} else {
