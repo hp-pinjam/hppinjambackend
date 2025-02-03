@@ -238,7 +238,7 @@ func GCFGetAllHpID(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Re
 	}
 }
 
-func GetUserData(publicKey, MongoConnStringEnv, dbname, colname, token string, r *http.Request) string {
+func GetUserData(publicKey, MongoConnStringEnv, dbname, colname string, r *http.Request) string {
 	req := new(Response)
 
 	// Membuat koneksi ke MongoDB
@@ -258,7 +258,7 @@ func GetUserData(publicKey, MongoConnStringEnv, dbname, colname, token string, r
 	}
 
 	// Verifikasi token menggunakan IsTokenValid
-	payload, err := Decoder(publicKey, token)
+	payload, err := Decoder(publicKey, tokenStr)
 	if err != nil {
 		req.Status = false
 		req.Message = "Invalid token: " + err.Error()
