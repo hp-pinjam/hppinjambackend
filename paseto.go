@@ -25,7 +25,7 @@ func LoginUser(Privatekey, MongoEnv, dbname, Colname string, r *http.Request) st
 				resp.Message = "Gagal Encode Token : " + err.Error()
 			} else {
 				resp.Status = true
-				resp.Message = "Selamat Datang USER"
+				resp.Message = fmt.Sprintf("Selamat datang %s", datauser.Username)
 				resp.Token = tokenstring
 			}
 		} else {
