@@ -2,6 +2,7 @@ package hppinjambackend
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 
@@ -237,7 +238,7 @@ func GCFGetAllHpID(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Re
 	}
 }
 
-func GetUserData(publicKey, MongoConnStringEnv, dbname, colname string, r *http.Request) string {
+func GetUserData(publicKey, MongoConnStringEnv, dbname, colname, token string, r *http.Request) string {
 	req := new(Response)
 
 	// Membuat koneksi ke MongoDB
@@ -248,7 +249,7 @@ func GetUserData(publicKey, MongoConnStringEnv, dbname, colname string, r *http.
 		return ReturnStringStruct(req)
 	}
 
-	// Ambil token dari header Login
+	//Ambil token dari header Login
 	tokenStr := r.Header.Get("Login")
 	if tokenStr == "" {
 		req.Status = false
@@ -257,16 +258,18 @@ func GetUserData(publicKey, MongoConnStringEnv, dbname, colname string, r *http.
 	}
 
 	// Verifikasi token menggunakan IsTokenValid
-	payload, err := IsTokenValid(publicKey, tokenStr)
+	payload, err := Decoder(publicKey, token)
 	if err != nil {
 		req.Status = false
 		req.Message = "Invalid token: " + err.Error()
 		return ReturnStringStruct(req)
 	}
 
+	fmt.Printf("Decode Result : %+v", payload)
+
 	// Ambil username dari payload dengan type assertion
-	username, ok := payload.Data["username"].(string)
-	if !ok || username == "" {
+	username := payload.Username
+	if username == "" {
 		req.Status = false
 		req.Message = "Username not found in token payload"
 		return ReturnStringStruct(req)
