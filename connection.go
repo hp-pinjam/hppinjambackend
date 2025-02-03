@@ -92,3 +92,15 @@ func GetOneAdmin(MongoConn *mongo.Database, colname string, admindata Admin) Adm
 	data := atdb.GetOneDoc[Admin](MongoConn, colname, filter)
 	return data
 }
+
+func GetUserFromDB(mconn *mongo.Database, Colname, username string) (User, error) {
+	var user User
+	collection := mconn.Collection(Colname)
+
+	err := collection.FindOne(context.TODO(), bson.M{"username": username}).Decode(&user)
+	if err != nil {
+		return User{}, err
+	}
+
+	return user, nil
+}

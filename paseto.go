@@ -236,3 +236,66 @@ func GCFGetAllHpID(MONGOCONNSTRINGENV, dbname, collectionname string, r *http.Re
 		return GCFReturnStruct(CreateResponse(false, "Failed to Get ID Hp", datahp))
 	}
 }
+
+func GetUserData(publickey, MongoEnv, dbname, Colname string, r *http.Request) string {
+	var resp Credential
+	mconn := SetConnection(MongoEnv, dbname) // Membuka koneksi MongoDB
+
+	// Mengambil token dari header Authorization
+	tokenString := r.Header.Get("Authorization")
+	if tokenString == "" {
+		resp.Message = "Token tidak ditemukan dalam header"
+		resp.Status = false
+		return GCFReturnStruct(resp)
+	}
+
+	// Decode token untuk mendapatkan payload
+	decodedPayload, err := watoken.Decode(tokenString, os.Getenv(publickey))
+	if err != nil {
+		resp.Message = "Token tidak valid: " + err.Error()
+		resp.Status = false
+		return GCFReturnStruct(resp)
+	}
+
+	// Assert tipe payload data ke map[string]interface{}
+	data, ok := decodedPayload.Data.(map[string]interface{})
+	if !ok {
+		resp.Message = "Payload data tidak valid"
+		resp.Status = false
+		return GCFReturnStruct(resp)
+	}
+
+	// Ambil username dari payload data
+	username, ok := data["username"].(string)
+	if !ok || username == "" {
+		resp.Message = "Username tidak ditemukan dalam token"
+		resp.Status = false
+		return GCFReturnStruct(resp)
+	}
+
+	// Gunakan username untuk mengambil data user
+	user, err := GetUserFromDB(mconn, Colname, username)
+	if err != nil {
+		resp.Message = "User tidak ditemukan: " + err.Error()
+		resp.Status = false
+		return GCFReturnStruct(resp)
+	}
+
+	// Hapus password sebelum dikembalikan untuk keamanan
+	user.Password = ""
+
+	// Serialisasi data user ke JSON string
+	userData, err := json.Marshal(user)
+	if err != nil {
+		resp.Message = "Gagal memproses data user: " + err.Error()
+		resp.Status = false
+		return GCFReturnStruct(resp)
+	}
+
+	// Isi Credential dengan status sukses dan data user di Message
+	resp.Status = true
+	resp.Message = string(userData)
+	resp.Token = tokenString
+
+	return GCFReturnStruct(resp)
+}
